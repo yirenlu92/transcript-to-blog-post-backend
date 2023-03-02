@@ -1,0 +1,427 @@
+all right welcome back to dc thursday everyone i'm pete soderling i'm the founder of data council and the data
+community fund and i'm your guide through the modern data ecosystem
+here on dc thursday we feature founders of companies leaders of open source projects
+or some type of thought leader in the data space and today i'm excited that we have patrick doherty here
+who's the co-founder and cto of rasco and patrick has some interesting ideas on
+data preparation feature engineering and recently
+on the metrics player as well so we'll have a wide-ranging conversation about
+some of those topics as well as what patrick sees in the future of data um so patrick i'm really excited to have
+you here thanks for joining us yeah pete great to be here thanks for having me so i just want to let people know a
+little bit about your background as i mentioned now you're the co-founder of rasco
+formerly you were a data science practice lead at slalom and before that you were a data scientist at dell
+so you've seen you know quite a bit of uh opportunity in the data science ecosystem for quite a few years i'm
+curious how how did you get into data in the first place yeah uh absolutely so started my um
+kind of career well in in college i actually started majoring in industrial engineering uh loved the idea that every
+process could be improved and um that was sort of the best way to get into that space at the time felt like the
+engineering discipline that was closest to sort of solving business problems and
+in that role i was you get exposed to a little bit of data right industrial engineer has its
+engineering has its like roots and data but you don't get the full fire hose that we get these days in analytics so
+i was first exposed uh through an internship where i was working as an industrial engineer
+and i was working on a plant floor which was um an experience uh it's one of those
+things that you kind of do it once and you learn if you ever if you want to do it for the rest of your life
+um i got to work at a cheez-it plant actually that was my my kind of first internship and
+it's like the like the little crackers just like the little crackers working at this plant where they're
+uh churning out like thousands of boxes per hour of cheez-its and um they taste
+way better coming out of the oven i'll tell you that than they that they do out of the box um but it was one of those projects that
+i got to work on while i was there where we're doing time studies which is like old school industrial engineering
+where you're literally looking for you know trying to squeeze out five ten second five or ten seconds of efficiency
+in like a manufacturing line process and you know you do that you save 50
+grand here 100 grand there over a year and you know that's how industrial engineers kind of help improve those
+processes but while i was there we got the opportunity to do some of those type of
+projects and then there's another project that we got to talking about which was
+optimizing pack weights so the idea of how much how many cheeses do i put in
+one bag before i seal it up and there's a lot of math that goes into that but there's also a lot of guessing
+right because you don't know exactly how big the cheeses are that day and how much they're gonna weigh so
+that sounds like a microsoft it sounds like a microsoft interview question by the way how many jesus can you fit in the ocean
+um it does sound like that but it was one of those weird ones where we start talking about it and you realize that
+right in front of you is maybe the the single biggest opportunity that they had
+from an efficiency standpoint was to optimize exactly how much you put in there because any extras you know wasted
+product so we get into the weeds on that one it's a pretty obvious like data science problem
+right looking back now i realized that but at the time it kind of felt like a hopeless exercise right how do you
+optimize that and they weren't even collecting the data you know this is like the most important thing they're probably
+tracking day to day and they didn't have a database in place or any way to even collect that so
+it was the first time i um i realized that yeah i should i should go look into that more i should see you know that
+feels like where things are going is that we don't have to stand around with stopwatches we could collect data and analyze it and then we i asked them you
+know if you save a few ounces of cheese that's going into a box on you know one production line and you can replicate
+that over the whole plant how much money is that and they're instantly they said it's five to ten
+million dollars in a year if we could optimize that that packing process so that kind of stood out to me is like the
+first time the power of data becomes apparent right it's it's scale and the ability to to scale things across
+um you know what humans can't do quickly yeah right um and so
+so that was sort of early in your career or you mentioned that was an internship i know you were also involved in one of
+the earliest data analytics programs master's programs in the country i believe um tell us a little bit about
+that experience yeah so i was lucky uh growing up in north carolina the founder of sas
+went to nc state my alma mater and as sas grew and became very successful
+he partnered with nc state to create the first masters in analytics program
+so kind of sas was the first company that realized that they're going to need a lot more data scientists to use their
+software right as that was going to be kind of critical to growing the the company um so they they took a very
+active approach and funded the uh the startup of that program and then i went through it uh as
+i think i was like maybe the sixth class so it's a 12-month program um so they
+had been around for a couple years but i got to to go through that and um it was at that point where things were starting
+to shift uh data science was getting the you know sexiest job of the 21st century
+you know on the magazine so starting to get more and more in demand and um we're fortunate because
+the the program was really oriented toward um you know getting a job in in
+uh in the enterprise like not toward a research progression or sort of an academic lens it was really geared
+toward opportunities in consulting and then applying new clients at like large companies
+so and you and you ended up doing one of each of those you did the consulting thing at slalom and you did the the data
+science thing at dell i did yeah uh opportunity at dell was awesome because i was my first job out of that master's
+program i was like a solo data scientist that also had to do some data engineering and
+everything under the sun and that was a great way to start out because
+you know that's the real life of data science to me is is when you have to start it like raw data right like
+literally getting sent a spreadsheet sometimes like hey this is the type of data we can get could you build a model
+off of this um and then you're looking at you know not just could i train a an effective
+model but could we deploy it right like is the infrastructure that we could actually do
+in production would people use it right oftentimes humans are still the ones making decisions with those models so
+you know is there the right opportunity where we could show them what the model's predicting and enable that human
+to make a better decision so i highly recommend that for people that are getting into data science like try
+and solve a problem from end to end rather than you know just focus on building the most accurate model
+yeah good advice and what was the state of data science tooling at the time
+it's a great question uh open source um is starting to dominate right so this is
+about 10 years ago uh eight years ago open source is taking off it's becoming like the
+um python and r are starting to be used for data science heavily sas is really
+starting to die off a little bit already i would say um because the sas meaning sas the company yes yes
+software as a service yeah um sas software is dying off because
+they uh invested heavily in you know building for like on-prem hardware
+deployments so a lot of times you're sticking like a sas server box into your your data center
+and uh obviously that's not where the world went right we went to to the other kind of sas and hosting things in cloud
+um so yeah that transition was starting but it's the wild west i mean complete
+uh lack of tooling for for the data scientists to be more effective i think at the time
+there's a couple of of packages out there um like your data robots were sort of starting around the same time or
+starting to get popular and kind of approaching it from a different angle but but certainly um finding their groundswell
+but yeah i would say overall um maybe similar to software engineering let's say
+10 20 years before that you just it's really every man for himself for every woman for them for themselves uh coming
+up with the right tools for the job um and then and then so you transition from there into consulting i'm curious
+um did you find like what were the biggest um weaknesses of in terms of sort of
+what customers were asking for um from you know the consultants to to find in the data or to figure out the
+data or what type of insights do they want to generate that were difficult or um kind of interested
+in in some of the friction that must have occurred there between a customer expectation and what you felt as a consultant you're actually
+able to deliver oh it's it's such a tricky problem because uh you know the best type of
+consulting projects you can easily you know define the beginning middle and end right yes those are projects like oh go
+implement salesforce right like okay that's a pretty clear roadmap you get into a data science modeling project or
+ml and it's like yeah we're going to try some things right and we'll see we'll see what happens
+that's a tougher uh a tougher axe to to kind of buy as a as a purchaser of consulting
+services so we did a lot of um trying to to make that more clear and do a lot of
+uh pocs initially to validate that something was predictable or that you
+know that there was a a possibility to build an effective model there and then come back and look
+at like scaling that out to something that could go into production so there's a lot of um crawl before you walk type of deal
+but that also led to like really good trust i would say with the the um clients that we were working with
+because we're very upfront with them we don't know what we're going to find right when we get this data in place and
+start training models um but the the time requirements just to
+do the pocs where in my opinion it's just crazy like mathematically looking at how much time
+you have to pay for to get some return on you know evaluating a model the the trade-off was
+tough because oftentimes it would take us two to three months before we could you know source
+the right data centralize it into some type of data store uh build features train a model
+and then evaluate that model in in these large enterprises that's taking two to three months no matter the
+project so that was that was a big um indicator to me that there has to be a way to
+uh make that more efficient right like all these internal teams were doing the same thing they didn't have any shortcuts and so you had a lot of data
+science teams out there that were taking years before they found a really solid
+use case right you were able to prove value on it right yeah i heard eric colson um who was
+obviously formerly head of beta at citrix and and before that netflix i heard him say something recently that i
+thought was really true in its simplicity and that's that data scientists really need to optimize for
+learning and exploration it's very iterative like sort of fast loops of the faster you can help your data science
+team learn the better whereas software engineers they're really optimized against
+implementing against requirements definitions and they're really two completely different
+things and you know maybe back um earlier in your career you know the scientists were sort of
+unable to to to work because just getting the data aggregated together in the first place was a problem and i think that was very
+much phase one of sort of the current data science era that we're in um now presumably
+you know folks generally have more data engineers at their disposal or at least a data-driven tech company has a data
+science team and a data engineering team that sort of work in tandem that's right um but now that they do i think it's you
+know sort of back to eric's first principles like it's important to realize that one um implements you know
+against requirements definition and one just really needs to be focused on speed and
+um so i found that you know uh that that comment quite helpful and it seems like it's true in your experience as well
+very true yeah and i think underappreciated by some of the leaders that are managing
+both teams right so they would often come to us and say how should i how should i manage this data science team like how do i set you
+know okrs for them and then you know track them against expectations and it's like
+completely differently right than like you said right the data engineers where it is culturally like philosophy the
+culture of those teams can be completely different right so different so different but they have to work closely together or else they won't produce
+value so how do you split that right yeah interesting interesting organizational challenge yes um well so
+i wanted to ask you um what was the key insight that sort of led you to start
+rosco so working in those consulting uh projects
+for our clients getting to work with a number of companies across verticals i was working with
+coca-cola uh delta home depot you're seeing a hospitality like um
+intercontinental hotels uh in the travel industry and you just get this breadth of
+hey if no one has a better way no matter their industry their tech stack or sort
+of their team organization um that to me is an indicator that there's a there's a lack of tooling right there's a way to make these
+super talented and smart individuals more productive so that was the the genesis for um for
+kind of the idea and then really meeting my co-founder at the right time which was while i was at slalom
+my co-founder jared was working at domino data lab at the time and seeing the exact same thing and he was already
+seeing it from a vendor perspective right selling software so it was such a good uh confirmation for both of us that
+we're like yeah this is a huge opportunity if someone can help these teams be more
+effective so that was kind of the uh the the kick in the pants let's say like
+something might be here let's go find out and then what we did is went out and interviewed
+both both of our networks really and were very specific with the ask we kind of met with these data scientists and
+said hey here's what we're seeing here's how we think this could get better if you had a better
+tool or sort of platform that would sit between you and this data preparation
+work that you're doing um do you think that would you know mitigate some of that frustration that
+you're feeling and um we heard a lot of yeses just people being like that's a
+big problem they were kind of up front like i'm not sure how you're going to solve that because
+our company is very restrictive about like where we put data and how that you know data privacy stuff is set up but
+they said if you can you know solve that that would be go a long way for us being happier in our job so that was um the
+right sign for us to kind of take the leap got it so it was really focused around
+um uh providing tooling to help teams um through their data preparation
+challenges and struggles um what did you what did you think the early iterations of that tool we're
+going to be and how do you think they're different to where you ended up now that's a great question
+uh it's so much fun going through or looking back right at the early prototypes that we had so our very first
+hypothesis was uh you'll get a kick out of this we said um feature engineering and sort of data
+prep is so time consuming but you have companies that are all doing it in their own silos
+and if you look at it they're actually feature engineering a lot of the same types of data right but just doing it
+within their four walls so they would never share that with with others so he said what if we could build a
+feature marketplace where feature engineering sort of happened once but then you could almost monetize or share
+your features with other companies and that would unlock so much value on the modeling side right because you
+could sort of go through a shopping cart and say like i'll take that feature and that feature and just throw them in
+um it was an awesome idea the prototype was really cool uh you can probably imagine the first thing we heard like
+hey i'm not letting anyone see those features like those are so valuable right i'm not ready as an organization
+to say that those are something i'm comfortable sharing with anyone um which of course makes sense and we we
+got there very quickly but it was such a good uh it was a great lesson and and you know
+back to that security thing like if you're building a business and in data a tool for data these days
+if you don't have that answer down right if you can't answer that question really clearly of like how
+does this still enforce security of my data um you're in trouble i think that's just
+the the state of the world right now so what is it about data prep that you
+think most teams struggle with have you sort of consolidated a couple key
+pains or points in sort of your exploration over the last several years on this topic
+100 uh there's let's say there's two key themes that emerged um number one is the obvious one
+to me which is the not reusing code so there's an idea of i'm going to work
+in a notebook data scientists love notebooks right it becomes super iterative you can go really fast
+you're building features a lot of times in like pandas and python so you're writing code in a slightly abstracted
+language but you're often operating on a sample of data in that notebook and you'll you know make a couple of
+quick uh features you maybe throw them into like a correlation analysis see if they're related to your target
+that notebook is that was the handoff point we were seeing for a lot of these teams where
+they would say oh i checked that notebook into git someone else can use it now and it is completely unrealistic
+because the next data scientist comes along they can't get the context they need from what's in a notebook to
+actually trust and reuse those features and then even if they do want to reuse the features
+you know the data is not there at all right the data is typically was being extracted from some other data lake or
+data warehouse into the notebook in the first place so doing something like you know refreshing
+your feature values became a whole process that wasn't answered for in the kind of development
+life cycle so that was the obvious one that was sort of the first one that we thought about the second one emerged after we
+worked with a lot of users on kind of that those early prototypes it was around the idea of trust
+it's the idea that even if i do have someone's code even if i see the feature values and have access
+to them you know in a tool that i could reuse them why should i trust them like i didn't
+build them data science is not inherently very collaborative like it's just it's a it's an exercise that we
+often do by ourselves so it was very uh sort of foreign to our
+users that we would you know that they would just use their colleagues features without ever talking to them about it
+so that was this other blocker was how can we surface enough information
+that you will as that you know new user trust what someone else built um
+so those yeah any solution we come up with that it has to kind of answer for both of those themes like the technical
+the code side and then the sort of process and context side
+and so i think those insights like led you down this road of really trying to nail um
+an engineering loop around features and like how did that how did that go into
+what did you learn from that experience because i think that was sort of um core to the early
+um incarnations of the rest of a product 100 yeah so what we learned is
+number one we made a decision early on we are not going to perpetuate the silos
+of data that we keep seeing data scientists in so we said anything we build is going to follow the cloud data warehouse
+architecture model where data centralized in one place not um
+siloed in s3 buckets or different data stores we made a bet on
+on snowflake i guess first as kind of the first data warehouse we would support and we said what if data
+scientists could without even realizing it just be working in snowflake alongside where their data engineers are
+working so that was our on on sort of the technical and the code side that was a
+answer that was it was pretty obvious to us once we went through sort of the pros and cons that that was a good decision because
+it was bringing that data science team back into a place where they could be collaborative with the let's say the
+data analysts and the data engineers on their team um so doing that led to
+uh okay we know how to centralize some of the data we know how to make it reusable we inherit the scale of the
+cloud data warehouses which is really important for data science we have customers that build features on
+40 billion row tables but they're not because rosco's not ingesting any of that data it feels very
+interactive and ad hoc even though the um the underlying data sets in the warehouse are quite large
+um and then on the like the people in the trust side yeah to your point it became very much about the
+let's say the handoff and the the interaction with other team members so this idea that once you build
+features um you're often doing that like first you don't have to decide if you're building something that's going to go
+into prod or not we kind of think of it as you start in like an experimental capacity
+you iterate there um find what works and you can do that in rosco with
+in a in a notebook we still support that as kind of a an ide or in our ui if you're if you're less
+inclined to want to write the code from scratch you can use our ui once you get to something that you're
+happy with that you trust that you're like this is valuable features that i do want to put into a
+model at that point you go through a publishing process and so that actually kind of loops you back around to the
+data engineer because it says hey here's here's sql that rosco generated for me that transforms these features builds
+these values out let's try and put that back into the prod pipeline because i need this
+refreshed on a daily hourly you know weekly basis um so
+using the tool we're kind of enforcing a workflow there that makes the organization happy because they're
+actually getting that handoff whereas before roscoe we heard things like yeah you know three months later i'd get
+a jupiter notebook in slack and i would just have to start from that right there was no handoff really happening
+um yeah that's so interesting um about sort of the collaboration and the
+handoff and how important it is to have sometimes you know contracts and
+like really define the surface area between where two different parts of the value chain or two different teams
+really hand off and i know that you guys have been quite thoughtful about um you know a lot of those workflows in
+the way that you've built the product and i think it's probably generated some insights that you know maybe surprised
+you at times if i'm not mistaken yeah oh of course um
+the whole the whole journey's a learning lesson right but uh but no the the big thing that's come out as we've
+kind of implemented that workflow into the product is the idea that that's not just useful for data
+scientists right that workflow is something that data analysts are going through
+in a different headspace sort of with maybe a different outcome in mind but technically they're
+actually doing some of the same things so what we learned and we learned this actually about watching how our users
+were using the product um and then going and asking them like hey why are you doing that they would kind of say
+look they're like rosco is just the place that i can put my kind of verified production-ready
+data sets like i don't care you know however someone wants to use that i don't really care right if they if they
+want to train a model with it or if they want to build a dashboard or god forbid they want to download it to excel like
+that's just you know that's their choice right as a consumer of that data so they would tell us um i just send them the
+link like i send them the the rosco url that it's a link to the data set that they've
+built in rosco so when that person opens it up they can see we do this kind of interactive profiling
+of the data so you can kind of see what those value like what that data set contains and then you also get the full
+transform lineage of how that data set is built so like all the sql steps that were used to construct it
+are in a canvas view and so it was really cool once we kind of heard that enough times that that
+that handoff point is so critical we're adding dbt integration now
+to make it really easy for our data analysts to collaborate with their kind of data engineer analytic engineers as
+well and have the whole pipeline end up as something that's running in dbt sql
+so that was an awesome insight that came out of yeah just kind of listening to the user
+and then um listening to or observing the dvt uh paradigm becoming kind of ubiquitous
+which is awesome yeah well kudos to you i think you're you know one of the first companies that
+i've seen um and i've sort of been privately predicting this for a while that probably saw clearly the the potential
+overlap between the feature store and the metric store and um and obviously those are sort of in two
+parallel or like a traditional feature stores on the ml infratrack in a traditional metric stores on the
+analytics you know data eng track and i think so far to date we've seen very
+few sort of crossover solutions that sort of merge use cases across those discrete
+um you know tracks of infra and that's sort of how we're seeing these point solutions show up on on either side but
+um i think from you know your perspective and listening to the way the users were using your tool
+um you probably stepped into to some of that you know consolidation um maybe maybe more quickly than others
+i think so and it's funny so we were in uh vegas for snowflake summit um last
+week and and you go uh you go to a data warehouse conference and you don't really expect to hear a
+lot of like data science talk right or even data analyst talk you just kind of expect to be talking to to data
+engineers but you show up and um data robot has a really big booth there and they're kind of talking about their
+snowflake integration and and then in the keynote one of the big announcements that they've been working on for a while
+is the python support for user defined python functions surround directly in snowflake so
+some of the that crossover you're talking about is certainly um you know might not have really been
+possible a few years ago from a platform standpoint right it could have been like a user experience that bridged the two
+the platform would have had to be different and i think that that change is gonna unlock a lot of value um as we
+go the next five ten years it's like data scientists being the kind of research arm that sits over
+in the corner and you don't talk to them i think that can change now right because like you said what's the difference between a metric and a
+feature uh there's not much to us i mean looking at like the the kind of metadata
+you need to describe it they are so similar it's just a matter of what that end objective is and then with
+features you just get a little bit more abstracted right where a dashboard might not look at a 13-week lag of a column necessarily
+a metric or a feature engineering you would look at that for predictive power but
+otherwise they're extremely similar kind of primitive so um yeah it's gonna be cool to see uh
+databricks is going that way google's certainly going that way with bigquery more and more data science support
+within the data warehouse yeah i wonder i want to like touch on this idea of this verified data set
+thing because i think it's so important because it feels like in the
+modern data world with data the data sprawl the etl sprawl
+right the data warehouse you know increased performance separation of search and compute to be
+able to handle the sprawl i feel like we've gotten into this world where um
+we don't know lots of about the data that's going into the warehouse and um and we've sort of lost control we we
+stopped modeling data or someone way downstream you know has some idea of the
+model the representation of that data but it just gets so lost or transformed or
+munged by so many different systems that by the time it comes to the data warehouse it feels like there's so little trust
+from the people who would want to operate on that data as to
+the providence of the data we talk about lineage and we talk about you know we've sort of thrown different terms at this
+around this to try and articulate this problem but i like this idea of a verified data set
+because i think what that implies is that there's some interstitial point at which
+more intentionality call it a metrics definition is sort of you know enforced over that
+data to sort of generate a usable intelligible output for
+certain data consumers um you know inside inside the data warehouse and that you
+can call that a data aster data product or a verified data set or whatever um i'm
+just wondering if you have any thoughts on that and because basically your your tool now it seems
+sits in you know part of the crux of this and then has the potential to be an ide if
+you will for sort of a you know a final or a verified data
+transformation like how do you think about that that process and that um that that notion
+oh it's funny so i have a mentor that uh has been in the analytics space for
+let's say 25 years and he makes the point every time i talk to him he's like remember it's just a pendulum
+and what he's referring to is the idea that uh in the data space we just tend
+to oscillate back and forth between lockdown experiences that are very like
+how heavy on the guard rails and emphasize things like verification like you're saying in governance
+and then you know people get frustrated with that it goes the other way which is the kind of data sprawl that you
+described right it's like every every man for himself everyone for themselves we're just gonna throw all the data out
+there and then everyone will go find it and find inside and we're certainly i think on the swing
+back towards some guard rails right because in the the hadoop era and then as snowflake even came in and replaced
+hadoop it was still implemented sort of um generically like you said there's very little data modeling that actually
+happens in the wild these days it's it's insane so uh that move back to guard
+rails it has a much better chance to sort of succeed this time i think for for one
+reason it's the idea that um the the consumption tool the bi tool doesn't
+have to be the home for those standardized definitions like it did last time right so a micro
+strategy of business objects experience 20 years ago was model it in our tool and then only ever
+consume your data through our tool right it's like the best lock-in of all time
+but people inevitably got frustrated and went around those tools and had to build things like models that can't go through
+that semantic layer so as we see this opportunity to do more
+of the the modeling and the verification closer to where the data actually is um
+which is largely just powered by dbt honestly it's just the idea that someone gave us a way to organize those
+sql scripts that's a little bit consistent and not completely ad hoc um yeah that's unlocked that ability to
+have some verification uh and that's the that's the opportunity that that we as
+roscoe can take advantage of is like hey do you know your pipelines as code live
+in dbt sql as you build as those compute and compile into actual data you know how
+can you respect that verification all the way down to like the user that's
+actually consuming the insight right what's the um the consumption layer for that verification so so that's where we
+fit and it's an awesome place to be right now and um we're just getting started i mean that
+was uh i saw a post uh coming out of the snowflake summit that said snowflake still has 1 40th
+of the um the revenues of oracle uh and that was posted by the ceo
+monte carlo and so that goes to show you like we're this problem is not going away anytime soon
+yeah that's great um well it's very interesting to see where you guys have ended up and and i'm
+excited about um the rest of your journey i'm curious because i wanted to ask you a couple questions about the future of
+data where do you think we're going to be in five or so years in terms of data
+tooling and infrastructure yeah uh it's amazing on the
+data science side how much things have already started to change and i don't know if we've even realized it yet um
+so the the idea of spinning up a team of phds or
+masters and analytics data scientists and just saying hey go off for a year train accurate models and let us know
+when you can put something in production i think that's going to start dwindling a bit right and the reason is we're
+learning about you know through tools like hugging face we're learning about this ability to
+do more generalized machine learning where you can kind of train once and
+then infer with context to specific business
+so it just economically won't make as much sense to do all of the future engineering and training you know within
+an organization i think that starts to you know continue to move outside of those four walls
+so models as kind of off the shelf apis that you can hook into that might sort
+of learn your context based on your data it's something that aws has has released
+as well with their personal eyes in their rec their forecast algorithms
+uh that's one trend that i think will continue because it just mathematically makes sense that we wouldn't all be
+training our own models um the other thing that that will sort of necessitate is
+that the data scientist becomes more of a curator of like experiences and how
+these things tie together because if you're taking a model off an api endpoint you can call and get
+a prediction how you choose to surface that and how you choose to explain where that
+prediction is coming from i think becomes way more important right it's ultimately it just is a black box for a
+long time we've been fighting that um i think we'll kind of stop fighting that and just start trying to find ways to
+to um explain what's in that black box as much as you can so so yeah the idea of like a data
+scientist as more of a a curator or an architect rather than just a model trainer i think will
+continue and then finally that would just make its way into all of our experiences right i don't think
+we'll have standalone bi tools that have separate data science you know layers or integrations like the new bi
+tools they will enrich you know they'll visually show you what the model is predicting and what the past historical
+data was right there's no reason for those to be two separate places you have to go so as that gets easier more and more
+people start using data science sometimes without realizing it [Music] so
+so at the end of the day even though your feature marketplace didn't work like you're
+you're a believer in the model marketplace and yeah um and and you think that you know the their their
+these models are getting commoditized and you know with transfer learning and sort of other techniques like we'll be able
+to capture like not eighty percent ninety percent of the value um of those things without necessarily
+building bespoke models and house uh 100 um the the value the ip is is in the data right
+with open source modeling frameworks the um the ip from developing an
+algorithm in-house is dwindling if if it's still there at all obviously the big tech company the google facebook
+apple the companies that have data that no one else has or will ever have are always going to have a leg up in the
+type of models they can build so they're very likely i think to expose more and
+more of that for um for monetization right that becomes a revenue stream for them and like you
+said transfer learning is sort of how the rest of the the economy can consume that and get
+from that um so yeah i i think even if people don't end up sharing their data
+sharing your model is a more secure way to share your data and the financial content will be there for for some of
+the large ones well in this in this brave new world and
+this this sort of you know future looking landscape um what do you think the biggest version is for rasco and and
+its products yeah so uh our mission when we started out was uh
+enable anyone to get insights from data in less than five minutes um that was our kind of day one mission
+that we came up with and it's funny how uh much that still sort of rings true and and honestly how hard that still is
+right like you would think with the advantages or the advances of um bi tooling that would be at a better better
+state with that but you know we've got amazing dashboard tools they still rely on a human to build a dashboard right
+that there's um this effort you have to put in to get value from your data so
+uh being at the crux of the like consumption layer of data
+it enables us over time to build more and more let's say automated and augmented
+experiences around that data um one example of like a goal for us is
+how many questions can we answer for you as the data consumer without you
+ever having to write a line of code or run a single transformation on that data right how
+many things can we infer from what we're seeing in that metric definition and the values of that metric
+that we can start to answer those questions before you ask them because i think that's where
+the 80 20 rule of data should be that we should spend our 80 on the 20 of the hardest problems the things that really
+do require the analytical depth and time but it's that's not what's happening
+right now that's not what we're seeing in the wild we're we're seeing people spend 80 of their time on maybe like the
+the easiest thing the things that should be sort of obvious right why did this metric drop yesterday
+why did my model accuracy degrade so let's let's flip that uh over the next
+five years and um you know skip the dashboard right got it yeah
+that's an interesting perspective for sure well um patrick it's been great to chat with you um i i guess just one final
+question actually um because i'm always curious what makes the technical people um tick when they start companies uh
+what's the hardest thing been for you as a technical person in being a co-founder of roscoe
+the hardest thing has been translating what we're building into
+messaging that can describe it in a concise period of time it's uh
+i've got so much respect for the great marketers now that you know i just never realized how how impossible the task
+that is uh if you'll spend 30 minutes with me we can definitely get into the weeds on what this thing does right if
+you're only giving me 10 seconds that's right like a really tricky problem so that's that's not true
+that's what um the next company i start it'll be a lot easier i hope yeah it gets easier over time believe me
+but um yeah that's uh that's the stupid point and um it's it takes a gift and i think a
+skill um of experience sometimes and seeing many products to be able to to articulate things clearly and and cross
+that chasm in people's um you know the mental roadblocks to be able to explain some of these technical
+products in really quick effective ways so i i definitely have seen that myself um well patrick it's it's great to talk
+to you i'm really excited about the company and and the track that you're on um how can people find you if they have more questions
+yeah roscomml.com uh we just launched yesterday a free sql generator which is is cool go to our
+blog and you'll see the link to that it allows anyone to test out our
+library of transforms to do things like target encoding or pivots in sql it's
+pretty painful but it's a cool tool that makes it really easy very cool awesome well i hope you'll
+check that out and um looking forward to seeing you in person um in the future um so thanks for
+joining us patrick i really appreciate your time thanks pete and thanks to all our listeners for
+supporting dc thursday we're going to take a short break for the summer and look forward to seeing you back here in
+the fall so thanks everyone um enjoy enjoy this episode and all the
+other episodes we have on our youtube channel since

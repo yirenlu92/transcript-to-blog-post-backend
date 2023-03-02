@@ -1,0 +1,282 @@
+[Music]
+[Music]
+[Music] you
+make sure this works all right great hi this is a picture of
+astronaut Peggy Whitson she's on a spacewalk outside the International Space Station imagine
+floating out there in space you look down at the earth it's a hundred miles
+below you you're feeling so small and insignificant looking out at the
+vastness of space around you and to fight despite feeling so small you might
+feel comforted knowing that you have the support of an incredible team scientists
+at NASA who are using the latest and technology to plan this mission for you to use data and models to let you do
+your job as effectively and as safely as possible or so you'd hope this is miles
+Solomon a seventeen year old from Great Britain who was looking through some of
+the data that NASA makes publicly available he noticed some abnormalities
+Miles was looking at radiation sensor data radiation sensors like one that he's holding in his hand those sensors
+are located on the space station and they record different levels of radiation in the environment when they
+detect some radiation they log a positive value indicating that severity and when no radiation is detected they
+should be reporting a zero value but instead what Miles found was that these
+sensors were recording negative numbers this is potentially a very big deal we
+don't know exactly how this data was being used but you can imagine there's a model somewhere that's taking this data
+into account to assess the safety of a potential space mission without being
+able to account for the negative readings that we have in this data we might think that there's less radiation
+out there than there actually is looking at this data you might make the decision
+to have a go on a space walk instead of a no-go that could be pretty dangerous this is a case where data really can
+mean the difference between life and death the really crazy thing about the
+story is that the domain experts here the scientists at NASA did think that these negative readings were
+possible they didn't think that they would happen that often though not enough to make a difference maybe once a
+year what miles was showing was that this was clearly happening far frequently once a year and if they had
+just put some data quality checks in if they were understanding their data a little bit better it would have saved
+them a little bit of embarrassment by having a 17-year old called them out on some of their data some of us here
+may be looking at scientific data others at product data or financial data or
+software data but data quality and understanding data shift and something is important to all of us so today I
+hope you can come away with some consideration for thinking about data quality and anomaly detection first and
+foremost when you design data pipelines and when you're starting to consume data unfortunately I won't have enough time
+to get into many details about specific statistical techniques that we're using
+or the technology implementations that we have the goal is to keep this talk pretty high level and and concepts that
+you can take away and bring back to your organization but I'd be happy to get into more details later so please come
+find me or one of my Netflix colleagues at our office hours which will be after the launch let's talk about some the
+data that Netflix looks at we have a hundred million members we just crossed this threshold it's very exciting for us
+but we still have a long way to go but those 100 million members live in countries all around the world and they
+collectively stream over a hundred and twenty five million hours of content every day that's a lot of watching
+Netflix that's really benjin right there if we if we did a little bit of math back of the math envelope here and we
+assume that an hour of Netflix content in high definition high quality is about
+three gigabytes of data multiply that times your 125 million hours and we're
+needing to deliver 375 petabytes of data to our customers every single day
+the data that's the equivalent of something like 80 million DVDs chock full of storage it's a lot of
+information you might wonder how do we deliver 375 petabytes of data every day
+without breaking the internet and here's the answer this is a server that Netflix has
+developed it's custom built to hold all of the video files the audio files the
+subtitles everything that you as a customer need to stream Netflix we take
+these servers and we distribute them all around the world to make them as close to our customers as possible there's one
+sitting and a data center in your city there's one maybe sitting inside your ISP your internet service providers own
+internal network the goal of this localization is that when our customers need to stream all that data it doesn't
+have to travel very far to get to them which means that that we actually get to deliver a really high performance
+Netflix experience every single time a great thing about these servers in
+addition to allowing us to very efficiently stream Netflix is that they give us a lot of data so it makes our
+data teams very happy what's actually happening when you stream Netflix is that you've loaded up your device a
+little hard to see but you have a device and you've browser on in the UI you found something that you want to watch
+and you click play your device sends a request to one of these servers asking for a piece of content the device of the
+server says ok that checks out we can watch this piece of content let me send some of that data back to you the first
+chunk of that particular video your device or CSI data data it's decoding it
+it's rendering it and your UI on your screen and playing back and you're asking for a little bit more data the
+next piece of that video so on and so forth the server sends that data back and we're doing this all in real time so
+that we can adapt to various network conditions that your device is experiencing that's what the product
+experienced in real time on the data side we're collecting a lot of information about what's going on both
+from the device perspective and the server perspective from the device we're understanding what is that customer
+variants really like who are you as a customer what device are you streaming on how quickly did it take that video to
+load did you experience any errors or interruptions during the course of that playback and from the server side we're
+capturing information about that same series of transactions but thinking about it from the server's own
+perspective what is P was I connected to to deliver that content how many bytes
+did I transfer in each connection how long did it take those bytes to arrive at their destination was the latency all
+of these raw logs are landing in Amazon s3 which we use as our main storage system and my team comes in and is using
+some business logic and windowing and some sophisticated tooling to process
+all this data merge it together and at the end of the day we create a data set that combines the perspective of the
+customer experience with the network experience this is a really critical data set at Netflix because it's the
+only place you can go to to understand how the network experience really affects what our customers are seeing
+when they stream Netflix this is you
+know just go my famous slide here with a picture of what's in this data looks like don't read too much into it but the
+point is it's got a lot of different types of data that we're looking at we have metrics we have dimensions this is
+just a tenth of the columns that we look at and we're writing out over well over a billion records every single day so as
+I mentioned this is a very core data set for Netflix and we've stood this up recently and we're now in the process of
+instilling a bunch of data quality and anomaly detection checks on this data set there are four main considerations
+that I have when we do these checks and so I walk through them one by one and
+what we'll kind of cover them as we go along the first is the impact I
+mentioned this is a very important table for us and so it makes sense for us to invest into making sure the data is of
+high quality and that we understand how it changes over time any data that really should have a bare
+minimum of data checks in place but this is one that's being used by many different people and we're making pre
+important decisions with it so it's actually worth a little bit more investment above and beyond what the
+bare minimum is we're making decisions like which partnerships might we want to
+invest in which is peas or which devices could bring valuable partnerships to Netflix or where should we invest our
+internal engineering resources where do we have the most performance problems and then we need to let make sure that
+our software engineers are addressing this problem next is data integrity I
+described two sources of data that we deal with the devices and the servers but in reality there's actually six data
+sources we use in the state of pipeline that means that there are six places where things can go wrong when I talk
+about data integrity here's an example of what I mean it's really thinking about the source inputs into whatever
+your ETL pipeline is where this can go wrong is if you've got missing data for
+maybe you've got a hive table with some partitions and the partitions don't exist or they don't have data in them
+maybe you have some unexpected data types flowing through nulls when there shouldn't be perhaps you have some
+malformed records that mean that you can't parse out key value pairs that you want to parse out we found it's best to
+be able to detect these types of data integrity issues during or even before
+your ETL processing we do this before by looking at metadata about our source
+input tables so we have a we luckily at Netflix we have amenity of a service that gives us information about our
+hives metadata we can say is that partition loaded how many rows are there is there what's the min and Max values
+that exist within that column what's the cardinality of that column and if we have suspicions that things aren't quite
+right here then we can choose to do something about whether we want to process that data or not we also want to
+make sure we quantify what's happening during our ETL processing so there's business logic that tells us we should
+throw away some percentage of data that we're reading and it's just not relevant for the
+output data set so we want to quantify how much we throw away though that if
+that's 5% one run and it goes to 50% the next time then it may not even indicate
+a big problem but it's something we want to be able to know an alert on once you have those checks in place you get to
+decide what to do with them if that's if the case i just described is happening where you're you're throwing away a lot
+more data maybe you're comfortable continuing to process it and release that data for downstream consumption but maybe you're
+not it's going to depend on your use case if your source data is totally missing then yeah don't even start that
+utl process lastly these are really
+shouldn't say easy but these are problems that can be addressed with reusable frameworks virtually any
+pipeline needs that kind of data integrity check on your source data so we can try to make this reusable and
+extensible at Netflix we are working between our data engineering teams and
+our data platform teams to make sure that we can address these data quality questions on source table every time you
+write out data you can audit it before you even publish it to be available for
+downstream consumption and that's going to go a long way to letting us be sure that the tables that we're ingesting for
+our source data are completely fine in terms of the main metadata about them to
+allow us to focus more time on addressing business metric issues that require a little bit more domain
+knowledge and those are a little bit more complicated let's talk about them
+the business metrics next this pipeline has dozens of metrics that we care about looking at and dozens of dimensions you
+think about the thousands of devices that Netflix customers are streaming on that the thousands of ISPs that they're
+connected to we operate in almost 200 countries there's just many dimensions and they have high cardinality so it
+makes it a challenge to figure out where things are changing when there's so many permutations and this is where anomaly
+detection really starts to shine when I talk about business metric shifts
+I think about things like in our world we look at error rates we don't want to make sure that we know when those are
+changing we also might want to know when our customers consumption of Netflix is
+changing in some way this is a really interesting one because you may see a
+shift a very sudden spike it's very visible in terms of how people are changing consumption but there also
+might be a longer-term shift that you're going to want to detect and that might require different types of algorithms and a different approach another one
+that comes up pretty frequently is a metric shift that's caused by a change in logging we have a lot of normalized
+or ratioed metrics the percentage of playback sessions that experience some types of event and often they change not
+because there's actually a change in the customer experience but because some logging issue has happened where the
+numerator or the denominator has been impacted we want to we definitely wanna make sure we catch those what let's walk
+through an example so let's say this is a global playback error rate the
+percentage of sessions that end in a fatal error for our customers it's not so don't we into the data but just for
+example this is this is a key metric that our executive team does track so you want to make sure that we we have
+our eyes on this and let's say that this spike is actually being caused only by Android phones in the country of Brazil
+they're having some some crazy issue we want to be able to know that because as
+the owners of this data is the stewards of this metric in this pipeline we want
+to be the ones who can talk about it and describe it and annotate it before the CEO comes knocking on our door so first
+we need to identify what change we need to know that it was the Android phones in Brazil that are causing this problem
+we're taking a very simple approach I mentioned we're standing this up right now so it's still in early days but we
+can do this by pre aggregating data to various grains that we think are meaningful in our case devices and
+countries are very common dimensions across which our metrics use shift so we define that as a level of aggregation to
+run anomaly detection on we're using a JSON config to describe what dimensions
+and metrics to pre-compute and pass over to our knowledge section service we'd say give me a time series give me days
+and hours and device types and countries to be able to pass over to that service run our Nelly detection algorithms on
+and receive that time series back with annotated data points on which seem anomalous this is very simplistic I will
+absolutely admit that we a much better solution would be to be able to automatically detect the places where
+these these problems are occurring we can't pre aggregate to every single potential roll-up and that's just really
+not not scalable it's really at the end of the day a dimensionality reduction problem we think we can get there and be
+a little bit smarter but we're going to start small next up is defining our
+sensitivity around alerting we could go crazy with being very sensitive to any type of metric shift but that's probably
+not going to be very meaningful to us so I do think we're making the right choice by starting pretty conservatively here
+pick the top metrics that you care about and you want to know have changed and make sure you're just alerting on those
+to the right people and you can scale it up and tune over time so we know what
+happened and we know we want to our load on it how do we do that alerting we've chosen to use emails for this emails are
+great at Netflix because they're very push they're not pull you get something in your inbox that tells you there's an
+action you need to take there's an investigation you need to perform and that's much better we get more response
+than if someone has to go to a pull mechanism to go to say and anomaly dashboard and figure out what's
+meaningful for them so we really like the emails here and we think about providing context here as well I firmly
+believe that a picture is worth a thousand words which is ironic because there's no picture on this slide but I
+mean a week we could absolutely include a link to this change in the error rate with the
+red phones in Brazil and we also one provide a link to an interactive dashboard that lets a human being be
+able to explore this problem a little bit more maybe the first question you're going to say I have after you see this
+problem is that it is are there other devices that are impacted in the same country but maybe to a lesser extent or
+is there a cyclical problem with Android that's actually just now going out of bounds and we're finally capturing it
+and then finally personalization is key as well this takes a little bit more
+work because it involves figuring out who cares about what and managing Google
+Groups or distribution lists but it's very possible and actually I think there's a long way to making sure that
+you're not being too aggressive or spammy with your alerting you know we've got a p.m. for Brazil and a p.m. for
+Android those are the going to be the people that have the most context about what's going on to potentially cause
+these issues and they're going to be ones who are most invested in actually helping us solve them that's going to go
+a long way to make sure that the right people know about different types of problems and finally scales this is this
+is a fun one to Netflix scale is a couple of different things in my mind
+it's really the scale of the data that we're processing here but it's also the way we scale our anomaly detection
+framework I mentioned that this data set has well over a billion and a half or
+something like a billion and half records every day and that means that it's a lot of data to process and in our
+current trades were doing that pre aggregation of data if we had to do that in a MapReduce environment that those
+pre aggregations would take a really long time if we want to do that on 40 different roll-ups for example that's
+that's not really going to scale very well it's going to take up a lot of cluster resources luckily for us we've
+chosen to take our data outside of hive and put a recent copy of it into elasticsearch for visualization purposes
+that's been a very successful technology at Netflix and the great thing is there we have an indexed data store and so we
+can very quickly query that data back for all of our pre aggregation and pass it along to our nomally
+detection service another technology that we found great at Netflix has been druid an Olaf datastore with similar
+response plans and note that this is all related to a batch print processing
+framework in a daily or hourly batch if you're doing stream processing and you want to run an anomaly detection you're
+going to have some slightly different technology considerations how do we
+scale the anomaly detection framework itself I've been describing this as a service that we call so you know there
+it sounds somewhat magical but we take a time series of data we pass it along to the service we're doing data transfer
+across a network and then getting that data back and that's that's really not terribly efficient we want to be able to
+have a service at scale so this the same core set of algorithms actually exists
+as a library as well that we can VOC in our code to run in the same infrastructure where the data actually
+resides so that's one way to scale at Netflix we talk about a shared anomaly
+detection framework and that also means that you're going to want more people to use it more people to contribute to it
+which contributes to a scale problem one of the most interesting things we've done is make the scalability work in
+terms of contribution and evaluation of algorithms we make it very easy for
+anyone to contribute a new algorithm to our code base and also to evaluate its
+performance so if I'm contributing some new algorithms that we don't already have I can take a particular data set
+run my knowledge section on that data set and see how it performs against all the existing algorithms which is great
+for a contributor but also for a developer if I have a data set and I don't exactly know which kind of
+algorithm I should use should be interquartile range should it look at 3 Sigma deviation are those going to be
+sufficient or maybe I should go to something more complex like DB scan or robust anomaly detection this type of
+evaluation framework that's automated helps me get there
+okay so we talked about the four considerations there and in conclusion
+do you guys cool minutes over lunch I think we can all be a little bit more
+like miles data quality and anomaly detection should be some of the first
+things that we think about when we design data pipelines when we consume data not an afterthought it's not
+something that we should think about as adding when we have some spare cycles because we all know that that free time
+very rarely comes along using our domain expertise as the folks who care most
+about the data or working with the business users who use it in those is really critical to we want to make sure
+that we're alerting on the right kinds of metrics and to the right levels so
+not too little and not too much what's going to be best for the entire organization and lastly it's great to
+think about how to scale these frameworks because these types of problems do not exist in isolation we
+should not try to solve them in isolation developing a great practice in
+your data organization around sharing different problems and solutions and frameworks for data quality will go a
+long way and your entire data where it can build a culture and muscle around data discipline as the data folks here
+as the analytics folks and the data engineers data credibility and data
+expertise are some of the most valuable assets that we bring to our organizations providing high quality
+data and proactively delivering alerts and insights around how that data
+changes are really really great opportunities for us to seize and the
+good news is that they are absolutely achievable if we just make them a priority that's it
+[Applause]
+give this mic great I think you look great
+presentation whatever one of the things you talked about were six approaches
+about data integrity and one of them was in a possible null instances in your
+JSON how tolerant you are when some of the fields are no because if you are
+actually getting data at a regular intervals as possible as some of the filter no do you keep track of how many
+nodes you've actually seen in data and then you can check it out or we can say no after n number of nulls of this
+particular imperative data I'm going to stop processing how do you how do you actually deal with those it's certainly
+not a problem you know if you have null values come in and you shouldn't you want to be able to tell that at the very
+least we use smart counters in most sort of pipelines to be able to at least quantify what it is that we're missing
+and the decision on what to do with that is going to depend you know there are some places where if that's a really
+critical field you you may not even want it you want to stop right there in other cases you may be a little bit more
+lenient it's going to really depend on how that data is being used and so it's going to be a little bit of a judgment call but certainly being able to
+quantify that in any field or type of structure that you're processing is is
+really key so it's kind of curious on
+when you're talking about anomalies in changes in viewing patterns one of the
+things that is always a challenge it seems to be is taking into account time
+of day day of week and those kind of things is that something that you guys have to build into the algorithms to
+check for anomalies or how do you handle that if seasonality is a big one and we
+certainly have you know seasonal patterns of viewing or really any metrics contend to have some type of
+patterns that you see periodically so a lot of algorithms are actually pretty
+well designed to address size link hold learners is one where you get to kind of observe that seasonal pattern and learn
+from it and the data the robust anomaly detection framework that is open sourced by Netflix actually takes into account
+weekly seasonal patterns is how it was developed so it is it's really important to think about what that data looks like
+should be able to figure out what you want to think is an anomaly because if you just had a very simple kind of
+detection then you know your weekly spike might look like something that's more problematic but there are the great
+the great news is there are algorithms that can help you address that but it also takes a little bit of domain knowledge about what that data is
+looking like so for an organization that
+runs I presume like problems of a/b tests I'd imagine there are like sort of
+intended anomalies right so is there you know these are things that are intended viewing pattern changes like how do you
+there are human loop to the extent so you know that you know this is a new really expected that you know really
+thinking about across dozens of a/b tests it's a good question oh certainly
+we're changing our products and testing it to see what's better for our customers and trying to roll those changes out and a lot of times we'll see
+impacts from testing actually not because they're so large-scale but really more on the logging side so that
+that new version we wanted to spin up for a different product experience it you know we didn't think about making
+sure the logging was coming through correctly so there's a lot of time that we need to spend to make sure the logging is there to be able to even do
+that evaluation and sometimes we'll see that come through in higher order metrics it's that's where it's really
+critical to have that context around what's changing and making sure we can
+loop in the right people like maybe that personalization process can involve the a/b testing team who kind of says oh
+yeah sorry we pushed a change that's what's causing your spike in your metrics but there and there there's
+always be some amount of noise and the data due to those types of experiences that we're testing how much
+of this framework is open-source or how much is it shared with you know the larger community
+they were busting Amelie detection framework is different source if you google for it rad you'll find it on our
+tech blog that was originally written in pig so it you know it might be useful
+for anyone who's using that language the the framework that we're developing with our data infrastructure team around
+making sure that source data is not making sure it's clean before it's
+released to be consumed is something that's actually under active development right now and I'm not sure if we're playing to open source that or not but I
+can check with them are a great talk so
+another question have you get played with streaming algorithms like sketching hyper log-log stuff like that I'm
+probably not the best person to talk about the streaming infrastructure because I'm not using it but I know I have some colleagues here who are so I
+love them see to it or you can compendious at the office hours sounds good thanks
+how big is the data team that built the rad system rather than shrinks it
+actually was collaboration with multiple data teams at netflix we have a data engineering and analytics
+group something like 100 people that's the state engineers data analysts I know it's like a lot of people and so that's
+one group who's working on kind of making sure that that kind of framework scales and applying it to the business
+and it was a partnership with a science and algorithms team so more of our data science group who was working on the
+exact algorithms to you know figure out that seasonality and how to handle it so at a nice little partnership there

@@ -1,0 +1,75 @@
+Make sure that you know what data shifts are and that you don't have more errors than you're expecting to have. This is a slide that covers some of what was talked about in the ml readiness score. It talks about some of the different types of tests that you might want to have for your data set, your model infrastructure, and then you know monitoring and production. I won't go through all these now, but these are just some of the things to think about as you're writing tests for your code base. And then diving into testing and continuous integration if there's a few concepts here there's unit and integration tests. So this is testing individual parts of your code base to make sure that they continue to function when you change your code and you know possibly testing your entire system.
+Next best thing is you know either using lambda and dealing with the fact that the the form that you have to get your model into is much trickier or using docker and it just kind of depends on what you need for your model and what your priorities are which side of the trade-off you land on if you're doing GPU inference then this becomes more tricky and there's you know more specialized tools like TF serving that you should look into all right so that's deploying on the web and what about deploying into hardware so the core challenge here is that you know your cell phone does not have the same amount of processing power that you can get on a server and so you often have to use a bunch of tricks and Sergei talked about some of them to reduce the size of your network and maybe quantize the weights another challenge is that the frameworks that people use on mobile are actually less full-featured and so you might need to choose your model architecture specifically to be one that can run on mobile there are a few options for doing this and tensorflow there's tensorflow light and tensorflow mobile and there are also few that are kind of more specific to different hardware platforms so Apple has a platform Google has a platform and then there's this this Fritz option that you know claims to be able to work well with both okay great that was the lightning five minute overview of Sergei's 90-minute lecture so I'm curious if were there any questions about the lecture concepts that he covered that you would like to talk about yeah yes so sir you mentioned how it goes all the way to the doctor where each Bates I was just wondering what benefit does that provide oh we're just containerized with the whole thing yeah I think if you have like different components of a larger system that need to interact with each other then it could be helpful to just isolate each of them so they have like sort of a very like small surface area of their API and so you kind of know what to expect from the different components of the system interacting with each other it could make it easier to test could make it easier for you know multiple people on a larger team to work on different components together and have kind of aspect that they need to meet for each other other other questions yeah serving which part see overlook yeah for I think for us I'd open a tie I would say and I'm curious what what Peter thinks about this as well but um I feel like training is the one that was overlooked for a long time like we would often have you know we would really really push one part of the code base forward and then we would go back to like some model that we got working months ago and we and find out that we could no longer train that model so I think that's one thing that's like overlooked
+Really easy to overlook other questions on this usually when you
+just said to retrain something are you saying you
+trained on another model forward and then try to go back to
+yeah so say like say you have you know
+two or three tasks that you're working
+on as a team and you have like a mono
+repo that you're using for all them and
+you know you solve the first two of them
+and your model works really great and
+you know you have some you have some
+weights for those models that you're
+happy with and then you know most of the
+team goes and works on the third
+component one challenge there is then
+you know they could push on that third
+component for two or three months and
+make some braking changes to the to the
+training part of the pipeline for the
+first two components without really
+realizing it and you know if you're even
+if you're deploying those the first two
+components into production or something
+like that you still might not notice
+because you might you know the
+pre-trained model might still be working
+but the action your ability to actually
+get the loss down on that model might
+have disappeared yeah and I think like
+Jett more generally outside of the
+opening a context something that's less
+of a problem for us but a lot of people
+complain about when I talk to them is is
+monitor is production monitoring because
+you know it's just it's really really
+easy to have like data data drift or you
+know or to have like some sort of like
+weird input go into your pipeline that
+you weren't accounting for and just
+break things without even realized that
+they're realizing that they're breaking
+and so I think a lot of teams put a lot
+of effort into figuring out how to do
+that really well yeah
+
+I would like to know if the distribution is to where I'm used to one type of
+images and the users that are requesting
+are getting another source for the
+images what sort of metrics can I
+yeah I think Sergey talked about a
+couple of them in a lecture and this is
+sort of something that I like have done
+less of personally but I think you just
+want to look at stuff like the
+statistics of the inputs and outputs
+
+yeah so just like the value of the
+pixels right and so I mean you could
+imagine doing trickier things to like
+you could look at the output
+distributions of your model and and you
+could you know maybe most of the time
+your model is produces pretty confident
+predictions and if the confidence of
+your model starts degrading that might
+be an early warning that the data
+distribution is shifting yeah but I
+think like input input and output
+statistics so just like you know over
+the last n images would have been the
+sort of the average values of things and
+you know over the over the last n like
+classifications would have been the
+classes what's the distribution of
