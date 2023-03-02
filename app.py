@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "https://transcript-to-blog-post-frontend.onrender.com"}})
+CORS(app)
 
 @app.route('/')
 def health():
