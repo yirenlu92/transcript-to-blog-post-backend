@@ -40,6 +40,8 @@ def handle_text_file():
 
     openai_api_key = os.getenv("OPENAI_API_KEY")
 
+    print("in the handle text file")
+
     # get transcript from requests 
     transcript = request.form['transcript']
 
