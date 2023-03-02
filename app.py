@@ -1,5 +1,5 @@
 from flask import Flask, request
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from utils import get_clean_transcript, split_on_fourth_appearance
 from da_vinci import get_blog_post_chunks_and_customer_success_quotes_from_da_vinci
 import os
@@ -34,6 +34,7 @@ def handle_youtube_video():
     return clean_transcript
 
 @app.route('/handle_text_file', methods=['POST'])
+@cross_origin()
 def handle_text_file():
 
     load_dotenv()
