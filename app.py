@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "https://transcript-to-blog-post-frontend.onrender.com"}})
 
 @app.route('/')
 def health():
@@ -34,7 +34,6 @@ def handle_youtube_video():
     return clean_transcript
 
 @app.route('/handle_text_file', methods=['POST'])
-@cross_origin()
 def handle_text_file():
 
     load_dotenv()
