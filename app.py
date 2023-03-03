@@ -77,6 +77,7 @@ def handle_text_file():
 
     try:
         for section in sections:
+            print(section)
             messages_copy = messages.copy()
             messages_copy.append({"role": "user", "content": "Here is a chunk of the transcript:\n\n{}".format(section)})
 
