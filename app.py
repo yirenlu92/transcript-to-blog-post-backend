@@ -45,6 +45,9 @@ def handle_text_file():
     # get transcript from requests 
     transcript = request.form['transcript']
 
+    # get prompt from requests
+    prompt = request.form['prompt']
+
     # get interviewee name from requests
     interviewee_name = request.form['interviewee_name']
 
@@ -52,6 +55,20 @@ def handle_text_file():
     interviewee_background = request.form['interviewee_background']
 
     whole_blog_post = []
+
+    translation_prompt = """
+        Please translate the following interview transcript into complete, grammatical, idiomatic American English sentences in the style of a professional translator. Do not omit details or change the meaning of the original text.
+    """
+
+    # initial_prompt = """
+    # Please turn the following interview transcript into a 600-word customer success story that begins: "We spoke with(name and title at company) about their vision for how Azure OpenAI Service will transform XXX. This is that conversation as summarized by Azure OpenAI Service."
+
+    # Stories should look and feel like they could live on the new Azure AI hub and support the messaging and value statements contained within.
+
+    # The interview transcript is interviewing an educational provider in Taiwan that used Azure OpenAI Service for chatbot and speech assessment capabilities.
+
+    # The interview transcript is in Chinese and is too long, so we will split it up and give it to you in chunks. Please output the corresponding section of the blog post for each input transcript portion we give you. The section should be given a subheading that corresponds to the question that Yiren Lu asked.
+    # """
 
     initial_prompt = """
     I would like you to take an interview transcript where Yiren Lu is interviewing {} on her experience transitioning from software engineering to product management, and rewrite it in complete, grammatical, idiomatic American English sentences in the style of a blog post.
@@ -68,6 +85,7 @@ def handle_text_file():
     messages=[
         {"role": "system", "content": "You are a journalist transcribing using an interview to write a blog post."},
         {"role": "user", "content": initial_prompt.format(interviewee_name, interviewee_name, interviewee_background, interviewee_name)},
+        # {"role": "user", "content": translation_prompt}
     ]
 
     # split the transcript into sections
