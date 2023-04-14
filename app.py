@@ -97,6 +97,8 @@ def handle_text_file():
             # extract the text in each section inside the square brackets
             parts_of_section = section.split("]")
 
+            print(parts_of_section)
+
             points = ""
             transcript = ""
             if len(parts_of_section) > 1:
@@ -107,6 +109,9 @@ def handle_text_file():
                 transcript = parts_of_section[1]
             else:
                 transcript = parts_of_section[0]
+            
+            print(points)
+            print(transcript)
 
             messages_copy = messages.copy()
             messages_copy.append({"role": "user", "content": initial_prompt.format(points, transcript)})
