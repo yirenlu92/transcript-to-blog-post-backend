@@ -75,9 +75,7 @@ def handle_text_file():
 
     Please edit the transcript of an interview question and answer below for clarity. If there are points listed below, make sure to hit the points listed below (but not only the points below). The output should be written in the first person, from {}'s perspective, and retain as much of the original sentences and details from the transcript as possible. Do not summarize. Do not make stuff up. Do not omit stuff.
 
-    Points to hit: {}
-
-    Transcript of interview question and answer: {}
+    {}
     
     """
 
@@ -100,35 +98,29 @@ def handle_text_file():
     try:
         for match in matches:
 
-            section = match[1]
-            # print the section
-            print("section:")
-            print(section)
-            print("-----")
-
             # extract the text in each section inside the square brackets
-            parts_of_section = section.split("]")
+            # parts_of_section = match.split("]")
 
-            print(parts_of_section)
+            # print(parts_of_section)
 
-            points = ""
-            transcript = ""
-            if len(parts_of_section) > 1:
-                points = parts_of_section[0]
-                points = points.replace("[", "")
-                if len(points) > 0:
-                    points = points[1:]
-                transcript = parts_of_section[1]
-            else:
-                transcript = parts_of_section[0]
+            # points = ""
+            # transcript = ""
+            # if len(parts_of_section) > 1:
+            #     points = parts_of_section[0]
+            #     points = points.replace("[", "")
+            #     if len(points) > 0:
+            #         points = points[1:]
+            #     transcript = parts_of_section[1]
+            # else:
+            #     transcript = parts_of_section[0]
             
-            print(points)
-            print(transcript)
+            # print(points)
+            # print(transcript)
 
             messages_copy = messages.copy()
-            messages_copy.append({"role": "user", "content": initial_prompt.format(points, transcript)})
+            messages_copy.append({"role": "user", "content": initial_prompt.format(match)})
 
-            blog_post_chunk = get_blog_post_chunks_and_customer_success_quotes_from_da_vinci(openai_api_key,section, messages_copy)
+            blog_post_chunk = get_blog_post_chunks_and_customer_success_quotes_from_da_vinci(openai_api_key, match, messages_copy)
 
             print(blog_post_chunk)
 
