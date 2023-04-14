@@ -92,12 +92,17 @@ def handle_text_file():
     # Find all the matches in the text
     matches = re.findall(pattern, transcript, re.DOTALL)
 
+    print("matches:")
+    print(matches)
+    print("------")
+
 
     try:
         for match in matches:
 
             section = match[1]
             # print the section
+            print("section:")
             print(section)
             print("-----")
 
