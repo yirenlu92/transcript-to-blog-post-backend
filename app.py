@@ -94,7 +94,6 @@ def handle_text_file():
 
     try:
         for section in sections:
-            print(section)
             # extract the text in each section inside the square brackets
             points, transcript = section.split("]")
             if len(points) > 0:
@@ -104,6 +103,8 @@ def handle_text_file():
             messages_copy.append({"role": "user", "content": initial_prompt.format(points, transcript)})
 
             blog_post_chunk = get_blog_post_chunks_and_customer_success_quotes_from_da_vinci(openai_api_key,section, messages_copy)
+
+            print(blog_post_chunk)
 
             whole_blog_post.append(blog_post_chunk)
 
