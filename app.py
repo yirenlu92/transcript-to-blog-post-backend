@@ -4,6 +4,7 @@ from utils import get_clean_transcript, split_on_fourth_appearance
 from da_vinci import get_blog_post_chunks_and_customer_success_quotes_from_da_vinci
 import os
 from dotenv import load_dotenv
+import re
 
 
 app = Flask(__name__)
@@ -71,33 +72,36 @@ def handle_text_file():
     # """
 
     initial_prompt = """
-    I would like you to take an interview transcript where Yiren Lu is interviewing {} on her experience transitioning from software engineering to product management, and rewrite it in complete, grammatical, idiomatic American English sentences in the style of a blog post.
 
-    Some addition context about {}'s professional background:
+    Please edit the transcript of an interview question and answer below for clarity. If there are points listed below, make sure to hit the points listed below (but not only the points below). The output should be written in the first person, from {}'s perspective, and retain as much of the original sentences and details from the transcript as possible. Do not summarize. Do not make stuff up. Do not omit stuff.
 
-    {}
+    Points to hit: {}
 
-    The blog post should be written in the first person, from {}'s perspective, and retain as much of the original sentences and details from the transcript as possible. It should not say things like "Yiren Lu asked me...". You might have re-organize the text so that the chronology makes sense.
+    Transcript of interview question and answer: {}
     
-    Since the transcript is too long to fix in your context window, we will split it up and give it to you in chunks. Please output the corresponding section of the blog post for each input transcript portion we give you. The section should be given a subheading that corresponds to the question that Yiren Lu asked.
     """
 
     messages=[
-        {"role": "system", "content": "You are a journalist transcribing using an interview to write a blog post."},
-        {"role": "user", "content": initial_prompt.format(interviewee_name, interviewee_name, interviewee_background, interviewee_name)},
-        # {"role": "user", "content": translation_prompt}
+        {"role": "system", "content": "You are an editor, editing a Q&A for clarity."}
     ]
 
-    # split the transcript into sections
-    sections = split_on_fourth_appearance(transcript, interviewee_name)
+    # How to extract each chunk of text between the delimiters "#### Question {n} BEGIN" and "#### Question {n} END"?
+    # Regular expression pattern to match the delimiters and extract the text in between
+    pattern = r'#### Question \d+ BEGIN(.*?)#### Question \d+ END'
 
-    # add a progress bar
+    # Find all the matches in the text
+    sections = re.findall(pattern, transcript, re.DOTALL)   
 
     try:
         for section in sections:
             print(section)
+            # extract the text in each section inside the square brackets
+            points, transcript = section.split("]")
+            if len(points) > 0:
+                points = points[1:]
+
             messages_copy = messages.copy()
-            messages_copy.append({"role": "user", "content": "Here is a chunk of the transcript:\n\n{}".format(section)})
+            messages_copy.append({"role": "user", "content": initial_prompt.format(points, transcript)})
 
             blog_post_chunk = get_blog_post_chunks_and_customer_success_quotes_from_da_vinci(openai_api_key,section, messages_copy)
 
