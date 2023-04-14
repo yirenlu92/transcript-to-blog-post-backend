@@ -90,10 +90,17 @@ def handle_text_file():
     pattern = r'#### Question \d+ BEGIN(.*?)#### Question \d+ END'
 
     # Find all the matches in the text
-    sections = re.findall(pattern, transcript, re.DOTALL)   
+    matches = re.findall(pattern, transcript, re.DOTALL)
+
 
     try:
-        for section in sections:
+        for match in matches:
+
+            section = match[1]
+            # print the section
+            print(section)
+            print("-----")
+
             # extract the text in each section inside the square brackets
             parts_of_section = section.split("]")
 
