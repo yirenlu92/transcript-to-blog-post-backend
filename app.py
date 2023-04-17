@@ -46,15 +46,6 @@ def handle_text_file():
     # get transcript from requests 
     transcript = request.form['transcript']
 
-    # get prompt from requests
-    prompt = request.form['prompt']
-
-    # get interviewee name from requests
-    interviewee_name = request.form['interviewee_name']
-
-    # get interviewee background
-    interviewee_background = request.form['interviewee_background']
-
     whole_blog_post = []
 
     translation_prompt = """
@@ -71,64 +62,79 @@ def handle_text_file():
     # The interview transcript is in Chinese and is too long, so we will split it up and give it to you in chunks. Please output the corresponding section of the blog post for each input transcript portion we give you. The section should be given a subheading that corresponds to the question that Yiren Lu asked.
     # """
 
-    initial_prompt = """
+    initial_prompt_with_points = """
 
-    Please edit the transcript of an interview question and answer below for clarity. If there are points listed below, make sure to hit the points listed below (but not only the points below). The output should be written in the first person, from {}'s perspective, and retain as much of the original sentences and details from the transcript as possible. Do not summarize. Do not make stuff up. Do not omit stuff.
-
-    {}
+    Please edit the portion of an interview transcript below for clarity. If there are points listed below, make sure to hit the points listed (but not only the points below). 
     
+    The edit should retain as many of the original sentences and details from the transcript as possible and be in question and answer form. Do not summarize. Do not make stuff up. Do not omit stuff.
+
+    Points:
+    {}
+
+    Transcript:
+    {}
+
+    """
+
+    initial_prompt_without_points = """
+
+    Please edit the portion of an interview transcript below for clarity. If there are points listed below, make sure to hit the points listed (but not only the points below). 
+    
+    The edit should retain as many of the original sentences and details from the transcript as possible and be in question and answer form. Do not summarize. Do not make stuff up. Do not omit stuff.
+
+    Transcript:
+    {}
+
     """
 
     messages=[
         {"role": "system", "content": "You are an editor, editing a Q&A for clarity."}
     ]
 
-    # How to extract each chunk of text between the delimiters "#### Question {n} BEGIN" and "#### Question {n} END"?
+    # How to extract each chunk of text between the delimiters "#QBEGIN " and "#QEND"?
     # Regular expression pattern to match the delimiters and extract the text in between
-    pattern = r'#### Question \d+ BEGIN(.*?)#### Question \d+ END'
+    pattern = r'#QBEGIN([\s\S]*?)#QEND'
 
     # Find all the matches in the text
     matches = re.findall(pattern, transcript, re.DOTALL)
 
-    print("matches:")
-    print(matches)
-    print("------")
+    print("length of matches")
+    print(len(matches))
 
 
     try:
         for match in matches:
 
-            # extract the text in each section inside the square brackets
-            # parts_of_section = match.split("]")
+            # extract the text in each section inside #PBEGIN and #PEND
+            points_pattern = r'#PBEGIN (.*?) #PEND'
 
-            # print(parts_of_section)
+            # Find all the matches in the text
+            points = re.findall(points_pattern, match, re.DOTALL)
 
-            # points = ""
-            # transcript = ""
-            # if len(parts_of_section) > 1:
-            #     points = parts_of_section[0]
-            #     points = points.replace("[", "")
-            #     if len(points) > 0:
-            #         points = points[1:]
-            #     transcript = parts_of_section[1]
-            # else:
-            #     transcript = parts_of_section[0]
+            # check if points is only empty strings or if points is empty
+            if all(not point.strip() for point in points) or len(points) == 0:
+                # dont include points in prompt
+                total_prompt = initial_prompt_without_points.format(match)
             
-            # print(points)
-            # print(transcript)
+
+            # include points in prompt
+            points = "\n".join(points)
+            total_prompt = initial_prompt_with_points.format(points, match)
+        
 
             messages_copy = messages.copy()
-            messages_copy.append({"role": "user", "content": initial_prompt.format(match)})
+            messages_copy.append({"role": "user", "content": total_prompt})
 
             blog_post_chunk = get_blog_post_chunks_and_customer_success_quotes_from_da_vinci(openai_api_key, match, messages_copy)
-
-            print(blog_post_chunk)
 
             whole_blog_post.append(blog_post_chunk)
 
     except Exception as e:
         print(e)
         return "Error: {}".format(e)
+    
+    print("length of whole blog post array:")
+    print(len(whole_blog_post))
 
     return "\n\n".join(whole_blog_post)
 
@@ -143,5 +149,5 @@ def handle_outline():
     # Return a response
     return blog_post
 
-# if __name__ == '__main__':
-#     app.run()
+if __name__ == '__main__':
+    app.run(debug=True)

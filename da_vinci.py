@@ -96,9 +96,12 @@ def get_blog_post_chunks_and_customer_success_quotes_from_da_vinci(openai_api_ke
     """
 
     completion = openai.ChatCompletion.create(
-    model="gpt-4",
+    model="gpt-3.5-turbo",
     temperature=0.1,
     messages=messages
     )
+
+    print("completion", completion)
+
 
     return completion.choices[0].message["content"]
