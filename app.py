@@ -46,6 +46,10 @@ def handle_text_file():
     # get transcript from requests 
     transcript = request.form['transcript']
 
+    print(transcript)
+
+    print("after parsing the transcript")
+
     whole_blog_post = []
 
     translation_prompt = """
